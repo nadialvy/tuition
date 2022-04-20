@@ -87,4 +87,20 @@ class TuitionController extends Controller
     } 
     // update data end 
 
+    // delete data start
+    public function delete($id){
+        $delete = Tuition::where('tuition_id', $id)->delete();
+        if($delete){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Data has been deleted'
+            ]);
+        }else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete data'
+            ]);
+        }
+    } 
+    // detele data end 
 }
