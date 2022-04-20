@@ -42,4 +42,15 @@ class TuitionController extends Controller
         }
     } 
     // create data end 
+
+    // read data start 
+    public function show(){
+        return Tuition::all();
+    }
+
+    public function detail($id){
+        return Tuition::where('tuition_id', $id)->first();
+    }
+    // read data end 
+
 }
