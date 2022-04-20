@@ -42,4 +42,17 @@ class GradeController extends Controller
         }
     } 
     // create data end 
+
+    // read data start
+    public function show(){
+        $data = DB::table('grade')
+        ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
+        ->select('grade.*', 'tuition.generation')
+        ->get();
+
+        return Response()->json([
+            'data' => $data,
+        ]);
+    } 
+    // read data end
 }

@@ -27,3 +27,4 @@ Route::put('/tuition/{id}', [TuitionController::class, 'update']);
 Route::delete('/tuition/{id}', [TuitionController::class, 'delete']);
 
 Route::post('/grade', [GradeController::class, 'store']);
+Route::get('/grade', [GradeController::class, 'show']);
