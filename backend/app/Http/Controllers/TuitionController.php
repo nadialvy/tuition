@@ -53,4 +53,38 @@ class TuitionController extends Controller
     }
     // read data end 
 
+    // update data start
+    public function update($id, Request $req){
+        $validator = Validator::make( $req->all(), 
+        [
+            'generation' => 'required',
+            'year' => 'required',
+            'nominal' => 'required'
+        ]);
+
+        if($validator -> fails()){
+            return response()->json($validator->errors());
+        }
+
+        $update = Tuition::where('tuition_id', $id)->update([
+            'generation' => $req->generation,
+            'year' => $req->year,
+            'nominal' => $req->nominal
+        ]);
+
+        $data = Tuition::where('tuition_id', $id)->first();
+        if($update){
+            return response()->json([
+                'status' => 'success',
+                'data' => $data
+            ]);
+        }else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update data'
+            ]);
+        }
+    } 
+    // update data end 
+
 }

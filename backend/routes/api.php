@@ -22,3 +22,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('/tuition', [TuitionController::class, 'store']);
 Route::get('/tuition', [TuitionController::class, 'show']);
 Route::get('/tuition/{id}', [TuitionController::class, 'detail']);
+Route::put('/tuition/{id}', [TuitionController::class, 'update']);
