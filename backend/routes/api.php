@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TuitionController;
+use App\Http\Controllers\GradeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +25,5 @@ Route::get('/tuition', [TuitionController::class, 'show']);
 Route::get('/tuition/{id}', [TuitionController::class, 'detail']);
 Route::put('/tuition/{id}', [TuitionController::class, 'update']);
 Route::delete('/tuition/{id}', [TuitionController::class, 'delete']);
+
+Route::post('/grade', [GradeController::class, 'store']);
