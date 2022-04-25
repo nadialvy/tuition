@@ -48,4 +48,10 @@ class StudentController extends Controller
         }
     } 
     // create data end 
+
+    // read data start
+    public function show(){
+        return Student::all();
+    } 
+    // read data end 
 }
