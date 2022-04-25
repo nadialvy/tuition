@@ -95,4 +95,22 @@ class StudentController extends Controller
         }
     } 
     // update data end 
+
+    // delete data start
+    public function delete($id){
+        $delete = Student::where('student_id', $id)->delete();
+
+        if($delete){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully deleted data',
+            ]);
+        }else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to delete data',
+            ]);
+        }
+    } 
+    // delete data end 
 }
