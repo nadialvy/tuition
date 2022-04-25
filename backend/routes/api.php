@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TuitionController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\OfficerController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,3 +37,8 @@ Route::post('/student', [StudentController::class, 'store']);
 Route::get('/student', [StudentController::class, 'show']);
 Route::put('/student/{id}', [StudentController::class, 'update']);
 Route::delete('/student/{id}', [StudentController::class, 'delete']);
+
+Route::post('/officer', [OfficerController::class, 'store']);
+Route::get('/officer', [OfficerController::class, 'show']);
+Route::put('/officer/{id}', [OfficerController::class, 'update']);
+Route::delete('/officer/{id}', [OfficerController::class, 'delete']);
