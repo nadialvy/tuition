@@ -54,4 +54,45 @@ class StudentController extends Controller
         return Student::all();
     } 
     // read data end 
+
+    // update data start
+    public function update($id, Request $req){
+        $validator = Validator::make( $req->all(), 
+        [
+            'nisn' => 'required|max:10|string',
+            'nis' => 'required|max:8|string',
+            'name' => 'required|max:35|string',
+            'grade_id' => 'required',
+            'address' => 'required',
+            'phone' => 'required|max:13'
+        ]);
+
+        if($validator->fails()){
+            return Response()->json($validator->errors());
+        }
+
+        $update = Student::where('student_id', $id)->update([
+            'nisn' => $req->nisn,
+            'nis' => $req->nis,
+            'name' => $req->name,
+            'grade_id' => $req->grade_id,
+            'address' => $req->address,
+            'phone' => $req->phone
+        ]);
+
+        $data = Student::where('student_id', $id)->first();
+        if($update){
+            return response()->json([
+                'status' => 'success',
+                'message' => 'Successfully update data',
+                'data' => $data,
+            ]);
+        }else {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Failed to update data',
+            ]);
+        }
+    } 
+    // update data end 
 }
