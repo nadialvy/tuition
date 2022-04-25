@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use DB;
 use App\Models\Officer;
+use Illuminate\Support\Facades\Hash;
 
 class OfficerController extends Controller
 {
@@ -25,7 +26,7 @@ class OfficerController extends Controller
 
         $store = Officer::create([
             'username' => $req->username,
-            'password' => $req->password,
+            'password' => Hash::make($req->password),
             'officer_name' => $req->officer_name,
             'level' => $req->level
         ]);
@@ -67,7 +68,7 @@ class OfficerController extends Controller
 
         $update = Officer::where('officer_id', $id)->update([
             'username' => $req->username,
-            'password' => $req->password,
+            'password' => Hash::make($req->password),
             'officer_name' => $req->officer_name,
             'level' => $req->level
         ]);
