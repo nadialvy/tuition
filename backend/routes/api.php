@@ -6,6 +6,7 @@ use App\Http\Controllers\TuitionController;
 use App\Http\Controllers\GradeController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\OfficerController;
+use App\Http\Controllers\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,3 +43,5 @@ Route::post('/officer', [OfficerController::class, 'store']);
 Route::get('/officer', [OfficerController::class, 'show']);
 Route::put('/officer/{id}', [OfficerController::class, 'update']);
 Route::delete('/officer/{id}', [OfficerController::class, 'delete']);
+
+Route::post('/payment', [PaymentController::class, 'store']);
