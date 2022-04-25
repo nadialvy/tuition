@@ -45,3 +45,4 @@ Route::put('/officer/{id}', [OfficerController::class, 'update']);
 Route::delete('/officer/{id}', [OfficerController::class, 'delete']);
 
 Route::post('/payment', [PaymentController::class, 'store']);
+Route::get('/payment', [PaymentController::class, 'show']);

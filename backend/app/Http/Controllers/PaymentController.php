@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use DB;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
 use App\Models\Payment;
@@ -47,4 +47,18 @@ class PaymentController extends Controller
         }
     } 
     // create data end 
+
+    // read data start
+    public function show(){
+        $data = DB::table('payment')
+        ->join('officer', 'payment.officer_id', '=', 'officer.officer_id')
+        ->join('student', 'payment.student_id', '=', 'student.student_id')
+        ->select('payment.*', 'officer.username', 'student.name')
+        ->get();
+
+        return Response()->json([
+            'data' => $data,
+        ]);
+    }
+    // read data end 
 }
