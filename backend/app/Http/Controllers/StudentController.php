@@ -70,20 +70,15 @@ class StudentController extends Controller
     } 
 
     public function detail($nisn){
-        // $getData = DB::table('student')
-        //                 ->select('tuition.nominal', 'tuition.start_payment')
-        //                 ->where('nisn', $nisn)
-        //                 ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
-        //                 ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
-        //                 ->first();
+        $detail = DB::table('student')
+                ->where('nisn', $nisn)
+                ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
+                ->select('student.*', 'grade.*', 'grade.name as grade_name')
+                ->first();
 
-        // $getStartPay = $getData->start_payment;
-        // $totalMonths = Carbon::now()->diffInMonths(Carbon::parse($getStartPay)) +1;
-
-        // $getNominal = $getData->nominal;
-        // $getBill = $getNominal * $totalMonths;
-
-        // return $getData;
+        return response()->json([
+            'data' => $detail,
+        ]);
     }
     // read data end 
 
