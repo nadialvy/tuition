@@ -18,7 +18,6 @@ class CreateTuitionTable extends Migration
             $table->integer('generation');
             $table->integer('year');
             $table->integer('nominal');
-            $table->date('start_payment');
             $table->timestamps();
         });
     }
