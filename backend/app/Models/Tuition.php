@@ -15,6 +15,7 @@ class Tuition extends Model
     public $fillable = [
         'generation',
         'year',
-        'nominal'
+        'nominal',
+        'start_payment'
     ];
 }

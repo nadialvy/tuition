@@ -15,7 +15,8 @@ class TuitionController extends Controller
         [
             'generation' => 'required',
             'year' => 'required',
-            'nominal' => 'required'
+            'nominal' => 'required',
+            'start_payment' => 'required',
         ]);
 
         if($validator -> fails()){
@@ -25,7 +26,8 @@ class TuitionController extends Controller
         $store = Tuition::create([
             'generation' => $req->generation,
             'year' => $req->year,
-            'nominal' => $req->nominal
+            'nominal' => $req->nominal,
+            'start_payment' => $req->start_payment,
         ]);
         
         $data = Tuition::where('generation', $req->generation)->first();
@@ -59,7 +61,8 @@ class TuitionController extends Controller
         [
             'generation' => 'required',
             'year' => 'required',
-            'nominal' => 'required'
+            'nominal' => 'required',
+            'start_payment' => 'required',
         ]);
 
         if($validator -> fails()){
@@ -69,7 +72,8 @@ class TuitionController extends Controller
         $update = Tuition::where('tuition_id', $id)->update([
             'generation' => $req->generation,
             'year' => $req->year,
-            'nominal' => $req->nominal
+            'nominal' => $req->nominal,
+            'start_payment' => $req->start_payment,
         ]);
 
         $data = Tuition::where('tuition_id', $id)->first();

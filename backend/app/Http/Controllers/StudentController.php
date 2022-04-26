@@ -18,7 +18,8 @@ class StudentController extends Controller
             'name' => 'required|max:35|string',
             'grade_id' => 'required',
             'address' => 'required',
-            'phone' => 'required|max:13'
+            'phone' => 'required|max:13',
+            'bill' => 'required|int',
         ]);
 
         if($validator->fails()){
@@ -31,7 +32,8 @@ class StudentController extends Controller
             'name' => $req->name,
             'grade_id' => $req->grade_id,
             'address' => $req->address,
-            'phone' => $req->phone
+            'phone' => $req->phone,
+            'bill' => $req->bill,
         ]);
 
         $data = Student::where('nisn', $req->nisn)->first();
@@ -64,7 +66,8 @@ class StudentController extends Controller
             'name' => 'required|max:35|string',
             'grade_id' => 'required',
             'address' => 'required',
-            'phone' => 'required|max:13'
+            'phone' => 'required|max:13',
+            'bill' => 'required|int',
         ]);
 
         if($validator->fails()){
@@ -77,7 +80,8 @@ class StudentController extends Controller
             'name' => $req->name,
             'grade_id' => $req->grade_id,
             'address' => $req->address,
-            'phone' => $req->phone
+            'phone' => $req->phone,
+            'bill' => $req->bill,
         ]);
 
         $data = Student::where('student_id', $id)->first();
