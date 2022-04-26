@@ -36,6 +36,7 @@ Route::delete('/grade', [GradeController::class, 'delete']);
 
 Route::post('/student', [StudentController::class, 'store']);
 Route::get('/student', [StudentController::class, 'show']);
+Route::get('/student/{id}', [StudentController::class, 'detail']);
 Route::put('/student/{id}', [StudentController::class, 'update']);
 Route::delete('/student/{id}', [StudentController::class, 'delete']);
 

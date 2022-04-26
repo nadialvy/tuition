@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Student;
+use Illuminate\Support\Carbon;
 
 class StudentController extends Controller
 {
@@ -19,12 +20,24 @@ class StudentController extends Controller
             'grade_id' => 'required',
             'address' => 'required',
             'phone' => 'required|max:13',
-            'bill' => 'required|int',
         ]);
 
         if($validator->fails()){
             return Response()->json($validator->errors());
         }
+
+        $getData = DB::table('grade')
+                        ->select('tuition.*')
+                        ->where('grade_id', $req->grade_id)
+                        ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
+                        ->first();
+
+        $getStartPay = $getData->start_payment;
+        $totalMonths = Carbon::now()->diffInMonths(Carbon::parse($getStartPay)) +1;
+
+        $getNominal = $getData->nominal;
+        $getBill = $getNominal * $totalMonths;
+        // var_dump($getBill);
 
         $store = Student::create([
             'nisn' => $req->nisn,
@@ -33,7 +46,7 @@ class StudentController extends Controller
             'grade_id' => $req->grade_id,
             'address' => $req->address,
             'phone' => $req->phone,
-            'bill' => $req->bill,
+            'bill' => $getBill,
         ]);
 
         $data = Student::where('nisn', $req->nisn)->first();
@@ -55,6 +68,23 @@ class StudentController extends Controller
     public function show(){
         return Student::all();
     } 
+
+    public function detail($nisn){
+        // $getData = DB::table('student')
+        //                 ->select('tuition.nominal', 'tuition.start_payment')
+        //                 ->where('nisn', $nisn)
+        //                 ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
+        //                 ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
+        //                 ->first();
+
+        // $getStartPay = $getData->start_payment;
+        // $totalMonths = Carbon::now()->diffInMonths(Carbon::parse($getStartPay)) +1;
+
+        // $getNominal = $getData->nominal;
+        // $getBill = $getNominal * $totalMonths;
+
+        // return $getData;
+    }
     // read data end 
 
     // update data start
