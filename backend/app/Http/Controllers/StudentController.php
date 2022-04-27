@@ -66,7 +66,11 @@ class StudentController extends Controller
 
     // read data start
     public function show(){
-        return Student::all();
+        $data = DB::table('student')
+                ->select('student.*', 'grade.*', 'grade.name as grade_name', 'student.name as student_name')
+                ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
+                ->get();
+        return $data;
     } 
 
     public function detail($nisn){
@@ -76,9 +80,7 @@ class StudentController extends Controller
                 ->select('student.*', 'grade.*', 'grade.name as grade_name')
                 ->first();
 
-        return response()->json([
-            'data' => $detail,
-        ]);
+        return $detail;
     }
     // read data end 
 

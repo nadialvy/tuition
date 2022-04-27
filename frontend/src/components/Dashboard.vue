@@ -1,19 +1,12 @@
 <template>
-    <div id="wrapper">
-        <SidebarComp />
-        <NavbarComp />
+    <div>
+        <h1>DASHBOARD</h1>
     </div>
 </template>
 
 <script>
-import NavbarComp from '../components/template/Navbar.vue'
-import SidebarComp from '../components/template/Sidebar.vue'
 
 export default{
-    name: 'dashboard-component',
-    components: {
-        NavbarComp,
-        SidebarComp
-    }
+    name: 'dash-component',
 }
 </script>
