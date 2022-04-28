@@ -5,8 +5,9 @@
        
         <!-- DataTales Example -->
         <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Student's Data</h6>
+            <div class="card-header py-3 d-flex justify-content-evenly align-items-center">
+                <h6 class="m-0 font-weight-bold text-primary">Students Data</h6>
+                <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addDataModal">Add Data</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -68,7 +69,6 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
             </div>
         </div>
@@ -98,6 +98,62 @@
                 </div>
             </div>
         </div>
+
+        <!-- modal add data  -->
+        <div class="modal fade" id="addDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add Data </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="">NISN</label>
+                        <input type="text" v-model="nisn" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">NIS</label>
+                        <input type="text" v-model="nis" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Name</label>
+                        <input type="text" v-model="name" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Grade</label>
+                        <select class="form-control" id="class" v-model="grade" required>
+                            <option 
+                                v-for="grade in grades" :key="grade" 
+                                :value="grade.grade_id"
+                            > 
+                                    {{ grade.name }} 
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Address</label>
+                        <input type="text" v-model="address" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="">Phone</label>
+                        <input type="text" v-model="phone" class="form-control" required>
+                    </div>
+                        
+                </div>
+                <div class="modal-footer">
+                    <button v-on:click="saveData()" type="button" class="btn btn-primary" data-dismiss="modal">{{this.action}}</button>
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -108,21 +164,75 @@
             return{
                 students: [],
                 student : '',
+                grades: [],
+                action: '',
+
+                //v-model
+                nisn: '',
+                nis: '',
+                name: '',
+                grade: '',
+                address: '',
+                phone: '',
+                
             }
         },
-        created(){
-            this.axios.get('http://localhost:8000/api/student')
-            .then( resp => {
-                console.log(resp.data);
-                this.students = resp.data
-            })
-        },
         methods: {
+            getData(){
+                this.axios.get('http://localhost:8000/api/student')
+                .then( resp => {
+                    console.log(resp.data);
+                    this.students = resp.data
+                })
+
+                this.axios.get('http://localhost:8000/api/grade')
+                    .then( resp => {
+                        console.log(resp.data);
+                        this.grades = resp.data
+                })
+            },
+
             detailData(student){
                 console.log(student);
                 
                 this.student = student;
+            },
+
+            addData(){
+                this.nisn = '',
+                this.nis = '',
+                this.name = '',
+                this.grade = '',
+                this.address = '',
+                this.phone = '',
+                this.action = 'Add'
+            },
+
+            saveData(){
+                let form = {
+                    'nisn': this.nisn,
+                    'nis': this.nis,
+                    'name': this.name,
+                    'grade_id': this.grade,
+                    'address': this.address,
+                    'phone': this.phone
+                }
+
+                if(this.action === 'Add'){
+                    this.axios.post('http://localhost:8000/api/student', form)
+                    .then( resp => {
+                        alert('Success')
+                        console.log(resp);
+                        
+                    })
+                }
+
+                this.getData()
             }
+            
+        },
+        mounted(){
+            this.getData()
         }
     }
 </script>

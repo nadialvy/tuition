@@ -50,9 +50,7 @@ class GradeController extends Controller
         ->select('grade.*', 'tuition.generation')
         ->get();
 
-        return Response()->json([
-            'data' => $data,
-        ]);
+        return $data;
     } 
     // read data end
 
