@@ -18,6 +18,7 @@ class Student extends Model
         'grade_id',
         'address',
         'phone',
-        'bill'
+        'bill',
+        'image'
     ];
 }

@@ -35,6 +35,7 @@ Route::put('/grade/{id}', [GradeController::class, 'update']);
 Route::delete('/grade', [GradeController::class, 'delete']);
 
 Route::post('/student', [StudentController::class, 'store']);
+Route::post('/student/{id}', [StudentController::class, 'upload_photo']);
 Route::get('/student', [StudentController::class, 'show']);
 Route::get('/student/{id}', [StudentController::class, 'detail']);
 Route::put('/student/{id}', [StudentController::class, 'update']);

@@ -21,7 +21,8 @@ class CreateStudentTable extends Migration
             $table->unsignedBigInteger('grade_id');
             $table->string('address', 100);
             $table->char('phone', 13);
-            $table->integer('bill');
+            $table->integer('bill')->nullable();
+            $table->string('image')->nullable();
             $table->timestamps();
 
             $table->foreign('grade_id')->references('grade_id')->on('grade');
