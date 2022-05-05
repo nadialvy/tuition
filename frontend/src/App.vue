@@ -101,11 +101,21 @@
           </li>
 
           <!-- Nav Item - Tables -->
-          <li class="nav-item">
-              <a class="nav-link" href="tables.html">
-                  <i class="fas fa-fw fa-table"></i>
-                  <span>Tables</span></a>
-          </li>
+          <router-link to="/student">
+            <li class="nav-item">
+                <a class="nav-link">
+                    <i class="fas fa-user-alt"></i>
+                    <span>Student</span></a>
+            </li>
+          </router-link>
+
+          <router-link to="/tuition">
+            <li class="nav-item custom">
+                <a class="nav-link">
+                    <i class="fas fa-money-bill"></i>
+                    <span>Tuition</span></a>
+            </li>
+          </router-link>
 
           <!-- Divider -->
           <hr class="sidebar-divider d-none d-md-block">
@@ -220,14 +230,17 @@
 </template>
 
 <script>
-// import NavbarComp from './components/template/Navbar.vue'
-// import SidebarComp from './components/template/Sidebar.vue'
 
 export default{
     name: 'app-component',
     components: {
-        // NavbarComp,
-        // SidebarComp
+
     }
 }
 </script>
+
+<style scoped>
+    .custom{
+        margin-top: -30px;
+    }
+</style>

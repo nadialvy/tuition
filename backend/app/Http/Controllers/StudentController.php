@@ -106,9 +106,10 @@ class StudentController extends Controller
     // read data start
     public function show(){
         $data = DB::table('student')
-                ->select('student.*', 'grade.*', 'grade.name as grade_name', 'student.name as student_name')
+                ->select('student.*', 'grade.*', 'grade.name as grade_name', 'student.name as student_name', 'tuition.generation as tuition_generation')
                 ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
-                ->orderBy('student.student_id', 'desc')
+                ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
+                ->orderBy('student.student_id')
                 ->get();
         return $data;
     } 

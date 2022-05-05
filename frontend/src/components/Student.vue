@@ -13,7 +13,7 @@
                                 <th>No.</th>
                                 <th>Name</th>
                                 <th>Class</th>
-                                <th>Address</th>
+                                <th>Generation</th>
                                 <th>Bill</th>
                                 <th>Action</th>
                             </tr>
@@ -23,7 +23,7 @@
                                 <td> {{i+1}} </td>
                                 <td> {{student.student_name}} </td>
                                 <td> {{student.grade_name}} </td>
-                                <td> {{student.address}} </td>
+                                <td> {{student.tuition_generation}} </td>
                                 <td> Rp.{{student.bill}} </td>
                                 <td>
                                     <button class="btn btn-success act" v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
@@ -50,7 +50,7 @@
         <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">{{student.student_name}} - {{student.grade_name}}</h5>
+            <h5 class="modal-title" id="exampleModalLabel">{{student.student_name}} - {{student.grade_name}}</h5>
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
@@ -64,6 +64,7 @@
                                 <li class="list-group-item"><strong>NIS : </strong> {{student.nis}} </li>
                                 <li class="list-group-item"><strong>Major : </strong> {{student.major}} </li>
                                 <li class="list-group-item"><strong>Phone : </strong> {{student.phone}} </li>
+                                <li class="list-group-item"><strong>Address : </strong> {{student.address}} </li>
                             </ul>
                         </div>
                     </div>
