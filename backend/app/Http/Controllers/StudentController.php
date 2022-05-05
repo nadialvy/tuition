@@ -108,6 +108,7 @@ class StudentController extends Controller
         $data = DB::table('student')
                 ->select('student.*', 'grade.*', 'grade.name as grade_name', 'student.name as student_name')
                 ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
+                ->orderBy('student.student_id', 'desc')
                 ->get();
         return $data;
     } 

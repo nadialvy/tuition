@@ -1,9 +1,5 @@
 <template>
     <div>
-        <!-- Page Heading -->
-        <!-- <h1 class="h3 mb-2 text-gray-800">Students Data</h1> -->
-       
-        <!-- DataTales Example -->
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-evenly align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Students Data</h6>
@@ -31,7 +27,14 @@
                                 <td> Rp.{{student.bill}} </td>
                                 <td>
                                     <button class="btn btn-success act" v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
-                                    <button class="btn btn-info act" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                    
+                                    <template v-if="student.image == null">
+                                        <button class="btn btn-warning act" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                    </template>
+                                    <template v-else>
+                                        <button class="btn btn-success act" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                    </template>
+                                    
                                     <button class="btn btn-primary act"><i class="far fa-edit"></i></button>
                                     <button class="btn btn-danger act"><i class="far fa-trash-alt"></i></button>
                                 </td>
@@ -48,7 +51,6 @@
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">{{student.student_name}} - {{student.grade_name}}</h5>
-                <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
             </div>
             <div class="modal-body">
                 <div class="container-fluid">
@@ -166,6 +168,7 @@
                 student : '',
                 grades: [],
                 action: '',
+                noPhoto: [],
 
                 //v-model
                 nisn: '',
@@ -231,10 +234,12 @@
 
                 if(this.action === 'Add'){
                     this.axios.post('http://localhost:8000/api/student', form)
-                    .then( resp => {
-                        alert('Success')
-                        console.log(resp);
-                        
+                    .then( () => {
+                        this.$swal({
+                            title: 'Success' ,
+                            text: 'Data has been added',
+                            icon: 'success'
+                        })
                     })
                 }
 
@@ -249,17 +254,31 @@
                 let form = new FormData();
                 form.append('student_photo', this.student_photo)
                 this.axios.post('http://localhost:8000/api/student/' + id, form)
-                .then( resp => {
-                    alert('Success' + resp.data.name)
+                .then( () => {
+                    this.$swal({
+                        title: 'Success',
+                        text: 'Upload Photo Success',
+                        icon: 'success',
+                        button: 'Ok'
+                    })
                     this.getData()
                 })
 
   
+            },
+
+            checkPhoto(){
+                this.axios.get('http://localhost:8000/api/cekPhoto/')
+                .then( resp => {
+                    this.noPhoto = resp.data
+                    console.log(this.noPhoto[0]);
+                })
             }
             
         },
         mounted(){
             this.getData()
+            this.checkPhoto()
         }
     }
 </script>
