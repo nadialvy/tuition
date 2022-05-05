@@ -61,7 +61,6 @@
                                 <li class="list-group-item"><strong>NISN : </strong> {{student.nisn}} </li>
                                 <li class="list-group-item"><strong>NIS : </strong> {{student.nis}} </li>
                                 <li class="list-group-item"><strong>Major : </strong> {{student.major}} </li>
-                                <!-- <li class="list-group-item"><strong>Address : </strong> {{student.address}} </li> -->
                                 <li class="list-group-item"><strong>Phone : </strong> {{student.phone}} </li>
                             </ul>
                         </div>
@@ -87,7 +86,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <!-- <label for="">Student Photo</label> -->
-                        <input type="file" ref="file"  @change="uploadPhoto()" class="form-control" required>
+                        <input type="file" ref="file" @change="uploadPhoto()" class="form-control" required>
                     </div>
                         
                 </div>
@@ -158,6 +157,7 @@
 </template>
 
 <script>
+// import { ref} from "vue"
     export default {
         name: 'student-component',
         data(){
@@ -174,6 +174,7 @@
                 grade: '',
                 address: '',
                 phone: '',
+                student_photo: '',
                 
             }
         },
@@ -196,6 +197,16 @@
                 console.log(student);
                 
                 this.student = student;
+            },
+
+            editData(student){
+                this.student_id = student.student_id,
+                this.nisn = student.nisn,
+                this.nis = student.nis,
+                this.name = student.name,
+                this.grade = student.grade_id,
+                this.address = student.address,
+                this.phone = student.phone
             },
 
             addData(){
@@ -228,6 +239,22 @@
                 }
 
                 this.getData()
+            },
+
+            uploadPhoto(){
+                 this.student_photo = this.$refs.file.files[0];
+            },
+
+            upload(id){
+                let form = new FormData();
+                form.append('student_photo', this.student_photo)
+                this.axios.post('http://localhost:8000/api/student/' + id, form)
+                .then( resp => {
+                    alert('Success' + resp.data.name)
+                    this.getData()
+                })
+
+  
             }
             
         },
