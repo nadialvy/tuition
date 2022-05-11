@@ -17,11 +17,13 @@ class CreatePaymentTable extends Migration
             $table->bigIncrements('payment_id');
             $table->unsignedBigInteger('officer_id');
             $table->unsignedBigInteger('student_id');
+            $table->unsignedBigInteger('tuition_id');
             $table->date('payment_date');
             $table->integer('tuition_month');
             $table->integer('tuition_year');
             $table->timestamps();
 
+            $table->foreign('tuition_id')->references('tuition_id')->on('tuition');
             $table->foreign('officer_id')->references('officer_id')->on('officer');
             $table->foreign('student_id')->references('student_id')->on('student');
         });

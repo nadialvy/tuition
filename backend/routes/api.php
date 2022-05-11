@@ -32,7 +32,7 @@ Route::delete('/tuition/{id}', [TuitionController::class, 'delete']);
 Route::post('/grade', [GradeController::class, 'store']);
 Route::get('/grade', [GradeController::class, 'show']);
 Route::put('/grade/{id}', [GradeController::class, 'update']);
-Route::delete('/grade', [GradeController::class, 'delete']);
+Route::delete('/grade/{id}', [GradeController::class, 'delete']);
 
 Route::post('/student', [StudentController::class, 'store']);
 Route::post('/student/{id}', [StudentController::class, 'upload_photo']);

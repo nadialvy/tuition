@@ -26,17 +26,19 @@
                                 <td> {{student.tuition_generation}} </td>
                                 <td> Rp.{{student.bill}} </td>
                                 <td>
-                                    <button class="btn btn-success act" v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
-                                    
-                                    <template v-if="student.image == null">
-                                        <button class="btn btn-warning act" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
-                                    </template>
-                                    <template v-else>
-                                        <button class="btn btn-success act" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
-                                    </template>
-                                    
-                                    <button class="btn btn-primary act"><i class="far fa-edit"></i></button>
-                                    <button class="btn btn-danger act"><i class="far fa-trash-alt"></i></button>
+                                    <div class="d-flex justify-content-around align-items-center">
+                                        <button class="btn btn-success" v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
+                                        
+                                        <template v-if="student.image == null">
+                                            <button class="btn btn-warning" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                        </template>
+                                        <template v-else>
+                                            <button class="btn btn-success" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                        </template>
+                                        
+                                        <button class="btn btn-primary"><i class="far fa-edit"></i></button>
+                                        <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>

@@ -104,8 +104,17 @@
           <router-link to="/student">
             <li class="nav-item">
                 <a class="nav-link">
-                    <i class="fas fa-user-alt"></i>
+                    <i class="bi bi-person-fill"></i>
+                    <!-- <i class="fas fa-user-alt"></i> -->
                     <span>Student</span></a>
+            </li>
+          </router-link>
+
+          <router-link to="/grade">
+            <li class="nav-item custom">
+                <a class="nav-link">
+                     <i class="bi bi-file-bar-graph-fill"></i>
+                    <span>Grade</span></a>
             </li>
           </router-link>
 
@@ -116,6 +125,14 @@
                     <span>Tuition</span></a>
             </li>
           </router-link>
+
+        <router-link to="/payment">
+            <li class="nav-item custom">
+                <a class="nav-link">
+                    <i class="bi bi-wallet-fill"></i>
+                    <span>Payment</span></a>
+            </li>
+        </router-link>
 
           <!-- Divider -->
           <hr class="sidebar-divider d-none d-md-block">

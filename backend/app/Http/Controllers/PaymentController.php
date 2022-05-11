@@ -16,7 +16,7 @@ class PaymentController extends Controller
         [
             'officer_id' => 'required',
             'student_id' => 'required',
-            // 'payment_date' => 'required',
+            'tuition_id' => 'required',
             'tuition_month' => 'required|int',
             'tuition_year' => 'required|int',
         ]);

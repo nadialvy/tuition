@@ -1,7 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import App from '../App.vue'
-// import Dashboard from '../components/Dashboard.vue'
-// import Student from ''
 
 const routes = [
   {
@@ -18,6 +15,16 @@ const routes = [
     path: '/tuition',
     name: 'tuition',
     component: () => import('../components/Tuition.vue')
+  },
+  {
+    path: '/payment',
+    name: 'payment',
+    component: () => import('../components/Payment.vue')
+  },
+  {
+    path: '/grade',
+    name: 'grade',
+    component: () => import('../components/Grade.vue')
   }
 ]
 
