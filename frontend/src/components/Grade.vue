@@ -3,7 +3,7 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-evenly align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Grade Data</h6>
-                <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addDataModal">Add Data</button>
+                <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addEditModal">Add Data</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -25,7 +25,7 @@
                                 <td> {{ grade.generation }} </td>
                                 <td>
                                     <div class="d-flex justify-content-around align-items-center">
-                                        <button class="btn btn-primary"><i class="far fa-edit"></i></button>
+                                        <button class="btn btn-primary" v-on:click="editData(grade)" type="button" data-toggle="modal" data-target="#addEditModal"><i class="far fa-edit"></i></button>
                                         <button class="btn btn-danger" v-on:click="removeData(grade.grade_id)"><i class="far fa-trash-alt"></i></button>
                                     </div>
                                 </td>
@@ -37,11 +37,11 @@
         </div>
 
         <!-- Modal add data  -->
-        <div class="modal fade" id="addDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Data </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{this.action}} Data </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -89,6 +89,7 @@
                 tuitions: [],
 
                 // v-model 
+                grade_id: '',
                 name: '',
                 major: '',
                 generation: ''
@@ -99,7 +100,6 @@
                 this.axios.get('http://localhost:8000/api/grade')
                 .then(response => {
                     this.grades = response.data
-                    // console.log(this.grades);
                 })
 
                 this.axios.get('http://localhost:8000/api/tuition')
@@ -112,7 +112,14 @@
                 this.name = ''
                 this.major = ''
                 this.generation = ''
-
+            },
+            editData(grade){
+                console.log(grade);
+                this.action = 'Edit',
+                this.grade_id = grade.grade_id,
+                this.name = grade.name
+                this.major = grade.major
+                this.generation = grade.tuition_id
             },
             saveData(){
                 let form = {
@@ -127,6 +134,15 @@
                         this.$swal({
                             title: 'Success' ,
                             text: 'Data has been added',
+                            icon: 'success'
+                        })
+                    })
+                }else {
+                    this.axios.put('http://localhost:8000/api/grade/' + this.grade_id, form)
+                    .then( () => {
+                        this.$swal({
+                            title: 'Success' ,
+                            text: 'Data has been updated',
                             icon: 'success'
                         })
                     })

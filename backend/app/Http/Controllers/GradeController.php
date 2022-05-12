@@ -47,7 +47,7 @@ class GradeController extends Controller
     public function show(){
         $data = DB::table('grade')
         ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
-        ->select('grade.*', 'tuition.generation')
+        ->select('grade.*', 'tuition.generation', 'tuition.tuition_id')
         ->get();
 
         return $data;

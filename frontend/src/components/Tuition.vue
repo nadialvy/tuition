@@ -26,8 +26,8 @@
                                 <td> {{ tuition.nominal }} </td>
                                 <td> {{ tuition.start_payment }} </td>
                                 <td>
-                                    <button class="btn btn-primary act" v-on:click="editData(tuition)" type="button" data-toggle="modal" data-target="#editDataModal"><i class="far fa-edit"></i></button>
-                                    <button class="btn btn-danger act"><i class="far fa-trash-alt"></i></button>
+                                    <button class="btn btn-primary act disabled" v-on:click="editData(tuition)" type="button" data-toggle="modal" data-target="#editDataModal"><i class="far fa-edit"></i></button>
+                                    <button class="btn btn-danger act disabled"><i class="far fa-trash-alt"></i></button>
                                 </td>
                             </tr>
                         </tbody>

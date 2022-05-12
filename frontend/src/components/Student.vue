@@ -3,7 +3,7 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-evenly align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Students Data</h6>
-                <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addDataModal">Add Data</button>
+                <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addEditModal">Add Data</button>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -36,7 +36,7 @@
                                             <button class="btn btn-success" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
                                         </template>
                                         
-                                        <button class="btn btn-primary"><i class="far fa-edit"></i></button>
+                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
                                         <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                                     </div>
                                 </td>
@@ -104,11 +104,11 @@
         </div>
 
         <!-- modal add data  -->
-        <div class="modal fade" id="addDataModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="addEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                 <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add Data </h5>
+                    <h5 class="modal-title" id="exampleModalLabel">{{this.action}} Data </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -188,33 +188,18 @@
             getData(){
                 this.axios.get('http://localhost:8000/api/student')
                 .then( resp => {
-                    console.log(resp.data);
                     this.students = resp.data
                 })
 
                 this.axios.get('http://localhost:8000/api/grade')
                     .then( resp => {
-                        console.log(resp.data);
                         this.grades = resp.data
                 })
             },
 
             detailData(student){
-                console.log(student);
-                
                 this.student = student;
             },
-
-            editData(student){
-                this.student_id = student.student_id,
-                this.nisn = student.nisn,
-                this.nis = student.nis,
-                this.name = student.name,
-                this.grade = student.grade_id,
-                this.address = student.address,
-                this.phone = student.phone
-            },
-
             addData(){
                 this.nisn = '',
                 this.nis = '',
@@ -224,7 +209,17 @@
                 this.phone = '',
                 this.action = 'Add'
             },
-
+            editData(student){
+                // console.log(student.student_name);
+                this.student_id = student.student_id,
+                this.nisn = student.nisn,
+                this.nis = student.nis,
+                this.name = student.student_name,
+                this.grade = student.grade_id,
+                this.address = student.address,
+                this.phone = student.phone,
+                this.action = 'Edit'
+            },
             saveData(){
                 let form = {
                     'nisn': this.nisn,
@@ -243,10 +238,21 @@
                             text: 'Data has been added',
                             icon: 'success'
                         })
+                        this.getData()
+                    })
+                }else {
+                    this.axios.put('http://localhost:8000/api/student/'+this.student_id, form)
+                    .then( () => {
+                        this.$swal({
+                            title: 'Success' ,
+                            text: 'Data has been updated',
+                            icon: 'success'
+                        })
+                        this.getData()
                     })
                 }
 
-                this.getData()
+                
             },
 
             uploadPhoto(){
