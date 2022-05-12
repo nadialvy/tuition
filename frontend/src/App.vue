@@ -110,6 +110,15 @@
             </li>
           </router-link>
 
+          <router-link to="/officer">
+            <li class="nav-item">
+                <a class="nav-link custom">
+                    <i class="bi bi-person-fill"></i>
+                    <!-- <i class="fas fa-user-alt"></i> -->
+                    <span>Officer</span></a>
+            </li>
+          </router-link>
+
           <router-link to="/grade">
             <li class="nav-item custom">
                 <a class="nav-link">
