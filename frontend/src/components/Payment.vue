@@ -10,11 +10,21 @@
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
-                                
+                                <th>No</th>
+                                <th>Student Name</th>
+                                <th>Officer Name</th>
+                                <th>Payment Date</th>
+                                <th>Nominal</th>
                             </tr>
                         </thead>
                         <tbody>
-                            
+                            <tr v-for="(payment, i) in payments" :key="i">
+                                <td> {{ i + 1 }} </td>
+                                <td> {{payment.student_name}} </td>
+                                <td> {{payment.officer_name}} </td>
+                                <td> {{payment.payment_date}} </td>
+                                <td> Rp.{{payment.nominal}} </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -33,7 +43,8 @@
                 <div class="modal-body">
                     <div class="modal-body">
                     <div class="alert alert-primary" role="alert">
-                        Payment date will be automatically set today
+                        Payment date will be automatically set today. <br/>
+                        Each time you pay, it means you pay the tuition for 1 month.
                     </div>
 
                     <div class="mb-3">
@@ -59,11 +70,6 @@
                             </option>
                         </select>
                     </div>
-                    
-                    <div class="mb-3">
-                        <label for="nominal">Nominal</label>
-                        <input type="number" step="this.nominalPay" class="form-control" v-model="nominal" required>
-                    </div>
 
                 </div>
 
@@ -86,26 +92,23 @@
                 officers: [],
                 students: [],
                 action: '',
-                selectedStudent: '',
-                nominalPay: '',
 
                 //v-model
                 officer_id: '',
                 student_id: '',
-                nominal: '',
             }
         },
         methods:{
             getData(){
-                this.axios.get('localhost:8000/api/payment')
+                this.axios.get('http://localhost:8000/api/payment')
                 .then((resp) => {
-                    this.payments = resp.data
+                    this.payments = resp.data.data
+                    console.log(this.payments);
                 })
 
                 this.axios.get('http://localhost:8000/api/officer')
                 .then(response => {
                     this.officers = response.data
-                    console.log(this.officers);
                 })
 
                 this.axios.get('http://localhost:8000/api/student')
@@ -113,22 +116,27 @@
                     this.students = resp.data
                 })
             },
-            studentChange(e){
-                this.selectedStudent = e.target.selectedOptions[0].value;
-                console.log(this.selectedStudent);
-            },
-            payMultiples(){
-                //get nominal from student that being select from user
-                this.axios.get('http://localhost:8000/api/student/' + this.selectedStudent)
-                .then((resp) => {
-                    this.nominalPay = resp.data.nominal
-                    console.log(this.nominalPay);
-                })
-            },
             addData(){
                 this.action = 'Add';
-                
+                this.officer_id = '';
+                this.student_id = '';
             },
+            saveData(){
+                let form = {
+                    'officer_id': this.officer_id,
+                    'student_id': this.student_id,
+                }
+                
+                this.axios.post('http://localhost:8000/api/payment', form)
+                .then(() => {
+                    this.$swal({
+                            title: 'Success' ,
+                            text: 'Payment success',
+                            icon: 'success'
+                        })
+                        this.getData()
+                })
+            }
 
         },
         mounted(){
