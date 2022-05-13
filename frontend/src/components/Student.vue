@@ -36,6 +36,7 @@
                                             <button class="btn btn-success" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
                                         </template>
                                         
+                                        <button class="btn btn-info" type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
                                         <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
                                         <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                                     </div>
@@ -158,11 +159,45 @@
                 </div>
             </div>
         </div>
+
+        <!-- modal detail payment  -->
+        <div class="modal fade" id="detailPayment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Detail Payment</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Date</th>
+                                <th>Nominal</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(detail, i) in detailPayment" :key="i">
+                                <td> {{ i + 1 }} </td>
+                                <td> {{ detail.date }} </td>
+                                <td> {{ detail.nominal }} </td>
+                                <td>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
-// import { ref} from "vue"
     export default {
         name: 'student-component',
         data(){
@@ -172,6 +207,7 @@
                 grades: [],
                 action: '',
                 noPhoto: [],
+                detailPayment: [],
 
                 //v-model
                 nisn: '',
@@ -195,8 +231,14 @@
                     .then( resp => {
                         this.grades = resp.data
                 })
-            },
 
+            },
+            getDetailPayment(id){
+                this.axios.get('http://localhost:8000/api/studentBill/' + id)
+                .then( resp => {
+                    this.detailPayment = resp.data
+                })
+            },
             detailData(student){
                 this.student = student;
             },

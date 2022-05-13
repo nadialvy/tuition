@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Student;
 use Illuminate\Support\Carbon;
+use Carbon\CarbonPeriod;
 
 class StudentController extends Controller
 {
@@ -114,13 +115,50 @@ class StudentController extends Controller
         return $data;
     } 
 
-    public function detail($nisn){
+    public function detailNISN($nisn){
         $detail = DB::table('student')
                 ->where('nisn', $nisn)
                 ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
                 ->select('student.*', 'grade.*', 'grade.name as grade_name', 'student.name as student_name')
                 ->first();
         return Response()->json([$detail]);
+    }
+
+    public function detail($id){
+        $detail = DB::table('student')
+                ->where('student_id', $id)
+                ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
+                ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
+                ->select('student.name', 'tuition.nominal')
+                ->first();
+
+        return Response()->json([$detail]);
+    }
+
+    public function detail_bill($id){
+        //get bill data
+        $bill = DB::table('student')
+                ->where('student_id', $id)
+                ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
+                ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
+                ->select('student.bill', 'tuition.start_payment', 'tuition.nominal')
+                ->first();
+
+        //loop month
+        $from = $bill->start_payment;
+        $to = Carbon::now();
+        $period = CarbonPeriod::create($from, '1 month', $to);
+        
+        $student_nominal = $bill->nominal;
+        $data = [];
+        foreach ($period as $dt) {
+            array_push($data,(object) [
+                        "date" => $dt->format("F Y"),
+                        "nominal" => $student_nominal
+            ]);
+        }
+        
+        return Response()->json($data);
     }
     // read data end 
 

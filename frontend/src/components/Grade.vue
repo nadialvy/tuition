@@ -136,6 +136,7 @@
                             text: 'Data has been added',
                             icon: 'success'
                         })
+                        this.getData()
                     })
                 }else {
                     this.axios.put('http://localhost:8000/api/grade/' + this.grade_id, form)
@@ -145,10 +146,9 @@
                             text: 'Data has been updated',
                             icon: 'success'
                         })
+                        this.getData()
                     })
                 }
-
-                this.getData()
             },
             removeData(id){
                 this.$swal({

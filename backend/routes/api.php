@@ -38,8 +38,10 @@ Route::post('/student', [StudentController::class, 'store']);
 Route::post('/student/{id}', [StudentController::class, 'upload_photo']);
 Route::get('/student', [StudentController::class, 'show']);
 Route::get('/student/{id}', [StudentController::class, 'detail']);
+Route::get('/studentBill/{id}', [StudentController::class, 'detail_bill']);
 Route::put('/student/{id}', [StudentController::class, 'update']);
 Route::delete('/student/{id}', [StudentController::class, 'delete']);
+
 
 Route::post('/officer', [OfficerController::class, 'store']);
 Route::get('/officer', [OfficerController::class, 'show']);
