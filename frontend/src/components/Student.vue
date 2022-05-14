@@ -183,7 +183,7 @@
                                 <td> {{ detail.date }} </td>
                                 <td> {{ detail.nominal }} </td>
                                 <td>
-
+                                    <span class="badge badge-danger">Not Paid</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -208,6 +208,7 @@
                 action: '',
                 noPhoto: [],
                 detailPayment: [],
+                chekPaymentStatus : '',
 
                 //v-model
                 nisn: '',
@@ -252,7 +253,6 @@
                 this.action = 'Add'
             },
             editData(student){
-                // console.log(student.student_name);
                 this.student_id = student.student_id,
                 this.nisn = student.nisn,
                 this.nis = student.nis,
@@ -321,10 +321,16 @@
             checkPhoto(){
                 this.axios.get('http://localhost:8000/api/cekPhoto/')
                 .then( resp => {
-                    this.noPhoto = resp.data
-                    console.log(this.noPhoto[0]);
+                    this.noPhoto = resp.FormData
                 })
-            }
+            },
+
+            chekPayment(id){
+                this.axios.get('http://localhost:8000/api/cekPayment/' + id)
+                .then( resp => {
+                    this.chekPaymentStatus = resp.data
+                })
+            },
             
         },
         mounted(){

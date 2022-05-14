@@ -64,8 +64,7 @@ class StudentController extends Controller
         }
     } 
 
-    public function upload_photo(Request $request, $id)
-    {
+    public function upload_photo(Request $request, $id){
         $validator = Validator::make($request->all(), 
         [
             'student_photo' => 'required|file|mimes:jpeg,png,jpg,jfif|max:2048'
@@ -115,15 +114,6 @@ class StudentController extends Controller
         return $data;
     } 
 
-    public function detailNISN($nisn){
-        $detail = DB::table('student')
-                ->where('nisn', $nisn)
-                ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
-                ->select('student.*', 'grade.*', 'grade.name as grade_name', 'student.name as student_name')
-                ->first();
-        return Response()->json([$detail]);
-    }
-
     public function detail($id){
         $detail = DB::table('student')
                 ->where('student_id', $id)
@@ -149,18 +139,40 @@ class StudentController extends Controller
         $to = Carbon::now();
         $period = CarbonPeriod::create($from, '1 month', $to);
         
+        //get nominal tuition per month
         $student_nominal = $bill->nominal;
-        $data = [];
+
+        //push the month and tuition to array
+        $billBeforePayment = [];
         foreach ($period as $dt) {
-            array_push($data,(object) [
+            array_push($billBeforePayment,(object) [
                         "date" => $dt->format("F Y"),
                         "nominal" => $student_nominal
             ]);
         }
+
+        //check if student is already pay or not
+        $dataPayment = DB::table('payment')
+                        ->where('student_id', $id)
+                        ->get();
+
+        $total = count($dataPayment);
+
+        $billAfterPayment = array_splice($billBeforePayment, $total);
         
-        return Response()->json($data);
+        return Response()->json($billAfterPayment);
     }
-    // read data end 
+    
+    public function chek_payment($id){
+        $dataPayment = DB::table('payment')
+                        ->where('student_id', $id)
+                        ->get();
+
+        $total = count($dataPayment);
+        return Response()->json($total);
+    }
+
+    //read data end
 
     // update data start
     public function update($id, Request $req){
