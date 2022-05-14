@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Carbon;
+use Carbon\CarbonPeriod;
 use App\Models\Student;
 use App\Models\Payment;
 
@@ -75,6 +76,61 @@ class PaymentController extends Controller
             'status' => 'success',
             'data' => $data,
         ]);
+    }
+
+    //get data payment by student id
+    public function history_payment($id){
+        $data = DB::table('payment')
+                ->join('student', 'payment.student_id', '=', 'student.student_id')
+                ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
+                ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
+                ->select('payment.payment_date', 'tuition.start_payment', 'tuition.nominal')
+                ->where('payment.student_id', $id)
+                ->get();
+
+        // if($data->count() > 0){
+        //     return $data;
+        // }else {
+        //     return 'nullol';
+        // }
+
+        if($data->count() > 0){
+            //loop month
+            $from = $data[0]->start_payment;
+    
+            //check if student is already pay or not
+            $dataPayment = DB::table('payment')
+                            ->where('student_id', $id)
+                            ->get();
+            $total = count($dataPayment) - 1;
+
+            
+            $to = date('Y-m-d', strtotime($from. ' + '. $total .' months')); //to harusnya start payment + berapa kali dia bayar
+            // var_dump($to);
+    
+            $period = CarbonPeriod::create($from, '1 month', $to);
+    
+            $dataDetail = [];
+            foreach ($period as $dt) {
+                array_push($dataDetail,(object) [
+                            "payment_date" => $data[0] -> payment_date,  
+                            "tuition_date" => $dt->format("F Y"),
+                            "nominal" =>$data[0]->nominal,
+                ]);
+            }
+    
+            return Response()->json([
+                'status' => 'success',
+                'data' => $dataDetail,
+            ]);
+        }else {
+            return Response()->json([
+                'status' => 'error',
+                'message' => 'Student never paid the tuition',
+            ]);
+        }
+
+        
     }
     // read data end 
 }

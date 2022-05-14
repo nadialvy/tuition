@@ -37,6 +37,7 @@
                                         </template>
                                         
                                         <button class="btn btn-info" type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
+                                        <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
                                         <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
                                         <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
                                     </div>
@@ -194,6 +195,44 @@
                 </div>
             </div>
         </div>
+
+        <!-- modal history Payment -->
+        <div class="modal fade" id="historyPayment" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-lg">
+                <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">History Payment</h5>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Payment Date</th>
+                                <th>Nominal</th>
+                                <th>Tuition For</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(data, i) in historyPayment" :key="i">
+                                <td> {{ i + 1 }} </td>
+                                <td> {{ data.payment_date }} </td>
+                                <td> {{ data.nominal }} </td>
+                                <td> {{ data.tuition_date }} </td>
+                                <td>
+                                    <span class="badge badge-success">Paid</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </template>
 
@@ -208,6 +247,7 @@
                 action: '',
                 noPhoto: [],
                 detailPayment: [],
+                historyPayment: [],
                 chekPaymentStatus : '',
 
                 //v-model
@@ -238,6 +278,13 @@
                 this.axios.get('http://localhost:8000/api/studentBill/' + id)
                 .then( resp => {
                     this.detailPayment = resp.data
+                })
+            },
+            getHistoryPayment(id){
+                this.axios.get('http://localhost:8000/api/historyPayment/' + id)
+                .then( resp => {
+                    this.historyPayment = resp.data.data
+                    console.log(this.historyPayment);
                 })
             },
             detailData(student){

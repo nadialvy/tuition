@@ -159,18 +159,10 @@ class StudentController extends Controller
         $total = count($dataPayment);
 
         $billAfterPayment = array_splice($billBeforePayment, $total);
-        
+
         return Response()->json($billAfterPayment);
     }
     
-    public function chek_payment($id){
-        $dataPayment = DB::table('payment')
-                        ->where('student_id', $id)
-                        ->get();
-
-        $total = count($dataPayment);
-        return Response()->json($total);
-    }
 
     //read data end
 

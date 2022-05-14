@@ -39,7 +39,6 @@ Route::post('/student/{id}', [StudentController::class, 'upload_photo']);
 Route::get('/student', [StudentController::class, 'show']);
 Route::get('/student/{id}', [StudentController::class, 'detail']);
 Route::get('/studentBill/{id}', [StudentController::class, 'detail_bill']);
-Route::get('/checkPayment/{id}', [StudentController::class, 'chek_payment']);
 Route::put('/student/{id}', [StudentController::class, 'update']);
 Route::delete('/student/{id}', [StudentController::class, 'delete']);
 
@@ -51,3 +50,4 @@ Route::delete('/officer/{id}', [OfficerController::class, 'delete']);
 
 Route::post('/payment', [PaymentController::class, 'store']);
 Route::get('/payment', [PaymentController::class, 'show']);
+Route::get('/historyPayment/{id}', [PaymentController::class, 'history_payment']);
