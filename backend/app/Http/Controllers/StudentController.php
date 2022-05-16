@@ -162,6 +162,14 @@ class StudentController extends Controller
 
         return Response()->json($billAfterPayment);
     }
+
+    //only shows students who still have tuition dependents
+    public function student_with_tuition(){
+        //jika didalam data history payment bagian tuition for match dengan bulan ini maka student tidak usah ditampilkan
+        // $dataHistoryPayment = 
+        $data = app('App\Http\Controllers\PaymentController')->history_payment();
+        return $data;
+    }
     
 
     //read data end

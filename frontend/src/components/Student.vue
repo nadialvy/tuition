@@ -237,6 +237,7 @@
 </template>
 
 <script>
+
     export default {
         name: 'student-component',
         data(){

@@ -70,6 +70,7 @@ class PaymentController extends Controller
                 ->join('grade', 'student.grade_id', '=', 'grade.grade_id')
                 ->join('tuition', 'grade.generation', '=', 'tuition.tuition_id')
                 ->select('payment.*', 'officer.username as officer_name', 'student.name as student_name', 'tuition.nominal')
+                ->orderBy('payment_id')
                 ->get();
 
         return Response()->json([
@@ -88,12 +89,6 @@ class PaymentController extends Controller
                 ->where('payment.student_id', $id)
                 ->get();
 
-        // if($data->count() > 0){
-        //     return $data;
-        // }else {
-        //     return 'nullol';
-        // }
-
         if($data->count() > 0){
             //loop month
             $from = $data[0]->start_payment;
@@ -104,7 +99,6 @@ class PaymentController extends Controller
                             ->get();
             $total = count($dataPayment) - 1;
 
-            
             $to = date('Y-m-d', strtotime($from. ' + '. $total .' months')); //to harusnya start payment + berapa kali dia bayar
             // var_dump($to);
     
