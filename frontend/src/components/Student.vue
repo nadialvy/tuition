@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -27,19 +27,36 @@
                                 <td> Rp.{{student.bill}} </td>
                                 <td>
                                     <div class="d-flex justify-content-around align-items-center">
-                                        <button class="btn btn-success" v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
-                                        
-                                        <template v-if="student.image == null">
-                                            <button class="btn btn-warning" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
-                                        </template>
-                                        <template v-else>
-                                            <button class="btn btn-success" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
-                                        </template>
-                                        
-                                        <button class="btn btn-info" type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
-                                        <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
-                                        <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                        <!-- <template v-if="user_type === 'admin'"> -->
+                                            <button class="btn btn-success" v-if="user_type === 'admin'? '' : 'disabled' " v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
+                                            
+                                            <template v-if="student.image == null">
+                                                <button class="btn btn-warning" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                            </template>
+                                            <template v-else>
+                                                <button class="btn btn-success" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                            </template>
+                                            
+                                            <button class="btn btn-info" type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
+                                            <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
+                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                        <!-- </template> -->
+                                        <!-- <template v-else>
+                                            <button class="btn btn-success" disabled v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
+                                            
+                                            <template v-if="student.image == null">
+                                                <button class="btn btn-warning" disabled v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                            </template>
+                                            <template v-else>
+                                                <button class="btn btn-success" disabled v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                            </template>
+                                            
+                                            <button class="btn btn-info" disabled type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
+                                            <button class="btn btn-secondary" disabled type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
+                                            <button class="btn btn-primary" disabled type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger" disabled><i class="far fa-trash-alt"></i></button>
+                                        </template> -->
                                     </div>
                                 </td>
                             </tr>
@@ -250,6 +267,7 @@
                 detailPayment: [],
                 historyPayment: [],
                 chekPaymentStatus : '',
+                user_type: '',
 
                 //v-model
                 nisn: '',
@@ -263,26 +281,40 @@
             }
         },
         methods: {
+            getUserType(){
+                this.user_type = localStorage.getItem('user_type')
+            },
             getData(){
-                this.axios.get('http://localhost:8000/api/student')
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.get('http://localhost:8000/api/student', token)
                 .then( resp => {
-                    this.students = resp.data
+                    this.students = resp.data.data
                 })
 
-                this.axios.get('http://localhost:8000/api/grade')
+                this.axios.get('http://localhost:8000/api/grade', token)
                     .then( resp => {
                         this.grades = resp.data
                 })
 
             },
             getDetailPayment(id){
-                this.axios.get('http://localhost:8000/api/studentBill/' + id)
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+                this.axios.get('http://localhost:8000/api/studentBill/' + id, token)
                 .then( resp => {
                     this.detailPayment = resp.data
                 })
             },
             getHistoryPayment(id){
-                this.axios.get('http://localhost:8000/api/historyPayment/' + id)
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.get('http://localhost:8000/api/historyPayment/' + id, token)
                 .then( resp => {
                     this.historyPayment = resp.data.data
                     console.log(this.historyPayment);
@@ -321,7 +353,11 @@
                 }
 
                 if(this.action === 'Add'){
-                    this.axios.post('http://localhost:8000/api/student', form)
+                    let token = {
+                        headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                    }
+
+                    this.axios.post('http://localhost:8000/api/student', form, token)
                     .then( () => {
                         this.$swal({
                             title: 'Success' ,
@@ -331,7 +367,11 @@
                         this.getData()
                     })
                 }else {
-                    this.axios.put('http://localhost:8000/api/student/'+this.student_id, form)
+                    let token = {
+                        headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                    }
+
+                    this.axios.put('http://localhost:8000/api/student/'+this.student_id, form, token)
                     .then( () => {
                         this.$swal({
                             title: 'Success' ,
@@ -352,7 +392,12 @@
             upload(id){
                 let form = new FormData();
                 form.append('student_photo', this.student_photo)
-                this.axios.post('http://localhost:8000/api/student/' + id, form)
+                
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.post('http://localhost:8000/api/student/' + id, form, token)
                 .then( () => {
                     this.$swal({
                         title: 'Success',
@@ -367,14 +412,22 @@
             },
 
             checkPhoto(){
-                this.axios.get('http://localhost:8000/api/cekPhoto/')
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.get('http://localhost:8000/api/cekPhoto/', token)
                 .then( resp => {
                     this.noPhoto = resp.FormData
                 })
             },
 
             chekPayment(id){
-                this.axios.get('http://localhost:8000/api/cekPayment/' + id)
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.get('http://localhost:8000/api/cekPayment/' + id, token)
                 .then( resp => {
                     this.chekPaymentStatus = resp.data
                 })

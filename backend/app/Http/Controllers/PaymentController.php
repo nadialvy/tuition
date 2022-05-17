@@ -73,6 +73,9 @@ class PaymentController extends Controller
                 ->orderBy('payment_id')
                 ->get();
 
+        //tuition for
+
+        
         return Response()->json([
             'status' => 'success',
             'data' => $data,
@@ -125,6 +128,18 @@ class PaymentController extends Controller
         }
 
         
+    }
+
+    public function student_with_tuition(){
+        //show student with bill > 0
+        $data = DB::table('student')
+                ->select('student.*')
+                ->where('student.bill', '>', 0)
+                ->get();
+        return Response()->json([
+            'status' => 'success',
+            'data' => $data,
+        ]);
     }
     // read data end 
 }

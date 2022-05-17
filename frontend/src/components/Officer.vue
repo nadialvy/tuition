@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -99,7 +99,11 @@
         },
         methods: {
             getData(){
-                this.axios.get('http://localhost:8000/api/officer')
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.get('http://localhost:8000/api/officer', token)
                 .then(response => {
                     this.officers = response.data
                 })
@@ -129,7 +133,10 @@
                 }
 
                 if(this.action === 'Add'){
-                    this.axios.post('http://localhost:8000/api/officer', form)
+                    let token = {
+                        headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                    }
+                    this.axios.post('http://localhost:8000/api/officer', form, token)
                     .then(() => {
                         this.$swal({
                             title: 'Success' ,
@@ -139,7 +146,10 @@
                         this.getData()
                     })
                 }else {
-                    this.axios.put('http://localhost:8000/api/officer/' + this.officer_id, form)
+                    let token = {
+                        headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                    }
+                    this.axios.put('http://localhost:8000/api/officer/' + this.officer_id, form, token)
                     .then(() => {
                         this.$swal({
                             title: 'Success' ,
@@ -158,7 +168,10 @@
                     buttons: [true, 'Yes delete it']
                 }).then(value => {
                     if(value.isConfirmed){
-                        this.axios.delete('http://localhost:8000/api/officer/' + id)
+                        let token = {
+                            headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                        }
+                        this.axios.delete('http://localhost:8000/api/officer/' + id, token)
                         .then(resp => {
                             if(resp.data.status === 'success'){
                                 this.$swal({

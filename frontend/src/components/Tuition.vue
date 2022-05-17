@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No.</th>
@@ -153,7 +153,11 @@ export default {
 
     methods: {
         getData(){
-            this.axios.get('http://localhost:8000/api/tuition')
+            let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+            }
+
+            this.axios.get('http://localhost:8000/api/tuition', token)
             .then( resp => {
                 this.tuitions = resp.data
                 console.log(this.tuitions);
@@ -187,7 +191,11 @@ export default {
             }
 
             if(this.action == 'Add'){
-                this.axios.post('http://localhost:8000/api/tuition', data)
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.post('http://localhost:8000/api/tuition', data, token)
                 .then(() => {
                     this.$swal({
                         title: 'Success' ,
@@ -196,8 +204,11 @@ export default {
                     })
                 }) 
             }else {
-                // console.log(this.tuition_id);
-                this.axios.put('http://localhost:8000/api/tuition/' + this.tuition_id, data)
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.put('http://localhost:8000/api/tuition/' + this.tuition_id, data, token)
                 .then(() => {
                     this.$swal({
                         title: 'Success' ,

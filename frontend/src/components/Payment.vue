@@ -7,7 +7,7 @@
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <table class="table table-bordered table-hover" id="dataTable" width="100%" cellspacing="0">
                         <thead>
                             <tr>
                                 <th>No</th>
@@ -63,10 +63,10 @@
                         <label for="student">Student Name</label>
                         <select class="form-control" id="student" v-model="student_id" @change="studentChange($event)">
                             <option 
-                                v-for="student in students" :key="student"
+                                v-for="student in studentsWithTuition" :key="student"
                                 :value="student.student_id"
                             >
-                                {{student.student_name}} - {{student.name}}
+                                {{student.name}}
                             </option>
                         </select>
                     </div>
@@ -90,7 +90,7 @@
             return{
                 payments: [],
                 officers: [],
-                students: [],
+                studentsWithTuition: [],
                 action: '',
 
                 //v-model
@@ -100,20 +100,23 @@
         },
         methods:{
             getData(){
-                this.axios.get('http://localhost:8000/api/payment')
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+
+                this.axios.get('http://localhost:8000/api/payment', token)
                 .then((resp) => {
                     this.payments = resp.data.data
-                    console.log(this.payments);
                 })
 
-                this.axios.get('http://localhost:8000/api/officer')
+                this.axios.get('http://localhost:8000/api/officer', token)
                 .then(response => {
                     this.officers = response.data
                 })
 
-                this.axios.get('http://localhost:8000/api/student')
+                this.axios.get('http://localhost:8000/api/studentWithTuition', token)
                 .then((resp) => {
-                    this.students = resp.data
+                    this.studentsWithTuition = resp.data.data
                 })
             },
             addData(){
@@ -126,8 +129,11 @@
                     'officer_id': this.officer_id,
                     'student_id': this.student_id,
                 }
-                
-                this.axios.post('http://localhost:8000/api/payment', form)
+
+                let token = {
+                    headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                }
+                this.axios.post('http://localhost:8000/api/payment', form, token)
                 .then(() => {
                     this.$swal({
                             title: 'Success' ,

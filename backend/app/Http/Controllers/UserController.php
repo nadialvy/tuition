@@ -75,7 +75,7 @@ class UserController extends Controller
         }
 
         return Response()->json([
-            compact('user'),
+            'data' => $user,
             'status' => 1,
             'message' => 'Success login!'
         ]);

@@ -26,10 +26,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
+Route::get('/loginCheck', [UserController::class, 'getAuthenticatedUser']);
 
 Route::group(['middleware' => ['jwt.verify:admin,officer']], function(){
 
-    Route::get('/loginCheck', [UserController::class, 'getAuthenticatedUser']);
 
     Route::group(['middleware' => ['jwt.verify:admin']], function(){
         Route::post('/tuition', [TuitionController::class, 'store']);
@@ -55,10 +55,10 @@ Route::group(['middleware' => ['jwt.verify:admin,officer']], function(){
     
     Route::get('/tuition', [TuitionController::class, 'show']);
     Route::get('/tuition/{id}', [TuitionController::class, 'detail']);
-
+    
     Route::get('/grade', [GradeController::class, 'show']);
-
-
+    
+    
     Route::get('/student', [StudentController::class, 'show']);
     Route::get('/student/{id}', [StudentController::class, 'detail']);
     Route::get('/studentBill/{id}', [StudentController::class, 'detail_bill']);
@@ -67,6 +67,7 @@ Route::group(['middleware' => ['jwt.verify:admin,officer']], function(){
     
     Route::get('/payment', [PaymentController::class, 'show']);
     Route::get('/historyPayment/{id}', [PaymentController::class, 'history_payment']);
+    Route::get('/studentWithTuition', [PaymentController::class, 'student_with_tuition']);
 });
 
 
