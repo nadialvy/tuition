@@ -3,7 +3,12 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-evenly align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Students Data</h6>
-                <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addEditModal">Add Data</button>
+                <template v-if="this.user_type === 'admin'">
+                    <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addEditModal">Add Data</button>
+                </template>
+                <template v-else>
+                    <button class="btn btn-primary ml-5" disabled v-on:click="addData()" type="button" data-toggle="modal" data-target="#addEditModal">Add Data</button>
+                </template>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -27,8 +32,8 @@
                                 <td> Rp.{{student.bill}} </td>
                                 <td>
                                     <div class="d-flex justify-content-around align-items-center">
-                                        <!-- <template v-if="user_type === 'admin'"> -->
-                                            <button class="btn btn-success" v-if="user_type === 'admin'? '' : 'disabled' " v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
+                                        <template v-if="this.user_type === 'admin'">
+                                            <button class="btn btn-success" v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
                                             
                                             <template v-if="student.image == null">
                                                 <button class="btn btn-warning" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
@@ -41,8 +46,8 @@
                                             <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
                                             <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
                                             <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
-                                        <!-- </template> -->
-                                        <!-- <template v-else>
+                                        </template>
+                                        <template v-else>
                                             <button class="btn btn-success" disabled v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
                                             
                                             <template v-if="student.image == null">
@@ -56,7 +61,7 @@
                                             <button class="btn btn-secondary" disabled type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
                                             <button class="btn btn-primary" disabled type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
                                             <button class="btn btn-danger" disabled><i class="far fa-trash-alt"></i></button>
-                                        </template> -->
+                                        </template>
                                     </div>
                                 </td>
                             </tr>
@@ -384,11 +389,9 @@
 
                 
             },
-
             uploadPhoto(){
                  this.student_photo = this.$refs.file.files[0];
             },
-
             upload(id){
                 let form = new FormData();
                 form.append('student_photo', this.student_photo)
@@ -407,10 +410,7 @@
                     })
                     this.getData()
                 })
-
-  
             },
-
             checkPhoto(){
                 let token = {
                     headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
@@ -421,7 +421,6 @@
                     this.noPhoto = resp.FormData
                 })
             },
-
             chekPayment(id){
                 let token = {
                     headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
@@ -431,12 +430,12 @@
                 .then( resp => {
                     this.chekPaymentStatus = resp.data
                 })
-            },
-            
+            }
         },
         mounted(){
             this.getData()
             this.checkPhoto()
+            this.getUserType()
         }
     }
 </script>

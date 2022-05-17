@@ -3,7 +3,12 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-evenly align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Tuition Data</h6>
-                <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addDataModal">Add Data</button>
+                <template v-if="this.user_type === 'admin'">
+                    <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addDataModal">Add Data</button>
+                </template>
+                <template v-else>
+                    <button class="btn btn-primary ml-5" disabled v-on:click="addData()" type="button" data-toggle="modal" data-target="#addDataModal">Add Data</button>
+                </template>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -26,8 +31,16 @@
                                 <td> {{ tuition.nominal }} </td>
                                 <td> {{ tuition.start_payment }} </td>
                                 <td>
-                                    <button class="btn btn-primary act disabled" v-on:click="editData(tuition)" type="button" data-toggle="modal" data-target="#editDataModal"><i class="far fa-edit"></i></button>
-                                    <button class="btn btn-danger act disabled"><i class="far fa-trash-alt"></i></button>
+                                    <div class="d-flex justify-content-around align-items-center">
+                                        <template v-if="this.user_type === 'admin'">
+                                            <button class="btn btn-primary act" v-on:click="editData(tuition)" type="button" data-toggle="modal" data-target="#editDataModal"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger act"><i class="far fa-trash-alt"></i></button>
+                                        </template>
+                                        <template v-else>
+                                            <button class="btn btn-primary act" disabled v-on:click="editData(tuition)" type="button" data-toggle="modal" data-target="#editDataModal"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger act" disabled><i class="far fa-trash-alt"></i></button>
+                                        </template>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -138,6 +151,8 @@ export default {
             start_payment: '',
             tuition_id: '',
 
+            //user
+            user_type: '',
 
         }
     },
@@ -217,12 +232,15 @@ export default {
                     })
                 })
             }
-
             this.getData()
+        },
+        getUserType(){
+            this.user_type = localStorage.getItem('user_type')
         }
     },
     mounted(){
-        this.getData();
+        this.getData()
+        this.getUserType()
     }
 }
 </script>

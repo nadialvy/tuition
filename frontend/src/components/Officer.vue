@@ -3,7 +3,12 @@
         <div class="card shadow mb-4">
             <div class="card-header py-3 d-flex justify-content-evenly align-items-center">
                 <h6 class="m-0 font-weight-bold text-primary">Officer Data</h6>
-                <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addEditModal">Add Data</button>
+                <template v-if="this.user_type === 'admin'">
+                    <button class="btn btn-primary ml-5" v-on:click="addData()" type="button" data-toggle="modal" data-target="#addEditModal">Add Data</button>
+                </template>
+                <template v-else>
+                    <button class="btn btn-primary ml-5" disabled v-on:click="addData()" type="button" data-toggle="modal" data-target="#addEditModal">Add Data</button>
+                </template>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -25,8 +30,14 @@
                                 <td> {{ officer.level }} </td>
                                 <td>
                                     <div class="d-flex justify-content-around align-items-center">
-                                        <button class="btn btn-primary" v-on:click="editData(officer)" type="button" data-toggle="modal" data-target="#addEditModal"><i class="far fa-edit"></i></button>
-                                        <button class="btn btn-danger" v-on:click="removeData(officer.officer_id)"><i class="far fa-trash-alt"></i></button>
+                                        <template v-if="this.user_type === 'admin'">
+                                            <button class="btn btn-primary" v-on:click="editData(officer)" type="button" data-toggle="modal" data-target="#addEditModal"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger" v-on:click="removeData(officer.officer_id)"><i class="far fa-trash-alt"></i></button>
+                                        </template>
+                                        <template v-else>
+                                            <button class="btn btn-primary" disabled v-on:click="editData(officer)" type="button" data-toggle="modal" data-target="#addEditModal"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger" disabled v-on:click="removeData(officer.officer_id)"><i class="far fa-trash-alt"></i></button>
+                                        </template>
                                     </div>
                                 </td>
                             </tr>
@@ -94,7 +105,9 @@
                 username: '',
                 password: '',
                 level: '',
-
+                
+                //user
+                user_type: '',
             }
         },
         methods: {
@@ -184,10 +197,14 @@
                         })
                     }
                 })
+            },
+            getUserType(){
+                this.user_type = localStorage.getItem('user_type')
             }
         },
         mounted(){
             this.getData()
+            this.getUserType()
         }
     }
 </script>

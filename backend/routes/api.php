@@ -32,7 +32,6 @@ Route::group(['middleware' => ['jwt.verify:admin,officer']], function(){
 
 
     Route::group(['middleware' => ['jwt.verify:admin']], function(){
-        Route::post('/tuition', [TuitionController::class, 'store']);
         Route::put('/tuition/{id}', [TuitionController::class, 'update']);
         Route::delete('/tuition/{id}', [TuitionController::class, 'delete']);
 
@@ -53,6 +52,7 @@ Route::group(['middleware' => ['jwt.verify:admin,officer']], function(){
         Route::post('/payment', [PaymentController::class, 'store']);
     });
     
+    Route::post('/tuition', [TuitionController::class, 'store']);
     Route::get('/tuition', [TuitionController::class, 'show']);
     Route::get('/tuition/{id}', [TuitionController::class, 'detail']);
     

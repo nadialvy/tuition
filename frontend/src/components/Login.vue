@@ -24,7 +24,7 @@
                                         </div>
                                         <div class="form-group">
                                             <input type="password" class="form-control form-control-user"
-                                                id="exampleInputPassword" placeholder="Password" v-model="password">
+                                                id="exampleInputPassword" placeholder="Password" v-model="password" v-on:keyup.enter="Login">
                                         </div>
                                         <!-- <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
