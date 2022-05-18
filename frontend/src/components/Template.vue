@@ -5,7 +5,7 @@
           <a class="sidebar-brand d-flex align-items-center justify-content-center navbar-default" href="index.html">
               <div class="sidebar-brand-icon">
                   <!-- <i class="fas fa-laugh-wink"></i> -->
-                  <img src="assets/logo-fix.png" alt="" width="130" height="auto">
+                  <img src="../assets/logo-fix.png" alt="" width="130" height="auto">
               </div>
               <!-- <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div> -->
           </a>
@@ -13,17 +13,18 @@
           <!-- Divider -->
           <hr class="sidebar-divider my-0">
 
-          <!-- Nav Item - Dashboard -->
-          <li class="nav-item active">
-              <a class="nav-link" href="index.html">
-                  <i class="fas fa-fw fa-tachometer-alt"></i>
-                  <span>Dashboard</span></a>
-          </li>
-
           <!-- Nav Item - Tables -->
-          <router-link to="/student">
+          <router-link to="/dashboard">
             <li class="nav-item">
                 <a class="nav-link">
+                    <i class="bi bi-speedometer"></i>
+                    <span>Dashboard</span></a>
+            </li>
+          </router-link>
+
+          <router-link to="/student">
+            <li class="nav-item">
+                <a class="nav-link custom">
                     <i class="bi bi-person-fill"></i>
                     <span>Student</span></a>
             </li>

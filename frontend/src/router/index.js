@@ -11,7 +11,7 @@ const routes = [
     component: () => import('../components/Template.vue'),
     children: [
       {
-        path: '/',
+        path: '/dashboard',
         name: 'Dashboard',
         component: () => import('../components/Dashboard.vue')
       },

@@ -33,34 +33,34 @@
                                 <td>
                                     <div class="d-flex justify-content-around align-items-center">
                                         <template v-if="this.user_type === 'admin'">
-                                            <button class="btn btn-success" v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
+                                            <button class="btn btn-success btn-circle" v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
                                             
                                             <template v-if="student.image == null">
-                                                <button class="btn btn-warning" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                                <button class="btn btn-warning btn-circle" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
                                             </template>
                                             <template v-else>
-                                                <button class="btn btn-success" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                                <button class="btn btn-success btn-circle" v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
                                             </template>
                                             
-                                            <button class="btn btn-info" type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
-                                            <button class="btn btn-secondary" type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
-                                            <button class="btn btn-primary" type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
-                                            <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                                            <button class="btn btn-info btn-circle" type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
+                                            <button class="btn btn-secondary btn-circle" type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
+                                            <button class="btn btn-primary btn-circle" type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger btn-circle" v-on:click="removeData(student.student_id)"><i class="far fa-trash-alt"></i></button>
                                         </template>
                                         <template v-else>
-                                            <button class="btn btn-success" disabled v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
+                                            <button class="btn btn-success btn-circle" disabled v-on:click="detailData(student)" type="button" data-toggle="modal" data-target="#detailModal"><i class="far fa-address-card"></i></button>
                                             
                                             <template v-if="student.image == null">
-                                                <button class="btn btn-warning" disabled v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                                <button class="btn btn-warning btn-circle" disabled v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
                                             </template>
                                             <template v-else>
-                                                <button class="btn btn-success" disabled v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
+                                                <button class="btn btn-success btn-circle" disabled v-on:click="editData(student)" type="button" data-toggle="modal" data-target="#photoModal"><i class="far fa-file-image"></i></button>
                                             </template>
                                             
-                                            <button class="btn btn-info" disabled type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
-                                            <button class="btn btn-secondary" disabled type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
-                                            <button class="btn btn-primary" disabled type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
-                                            <button class="btn btn-danger" disabled><i class="far fa-trash-alt"></i></button>
+                                            <button class="btn btn-info btn-circle" disabled type="button" data-toggle="modal" data-target="#detailPayment" v-on:click="getDetailPayment(student.student_id)"><i class="bi bi-card-list"></i></button>
+                                            <button class="btn btn-secondary btn-circle" disabled type="button" data-toggle="modal" data-target="#historyPayment" v-on:click="getHistoryPayment(student.student_id)"><i class="bi bi-clock-history"></i></button>
+                                            <button class="btn btn-primary btn-circle" disabled type="button" data-toggle="modal" data-target="#addEditModal" v-on:click="editData(student)"><i class="far fa-edit"></i></button>
+                                            <button class="btn btn-danger btn-circle" disabled><i class="far fa-trash-alt"></i></button>
                                         </template>
                                     </div>
                                 </td>
@@ -322,7 +322,7 @@
                 this.axios.get('http://localhost:8000/api/historyPayment/' + id, token)
                 .then( resp => {
                     this.historyPayment = resp.data.data
-                    console.log(this.historyPayment);
+                    console.log(resp.data.data);
                 })
             },
             detailData(student){
@@ -363,13 +363,21 @@
                     }
 
                     this.axios.post('http://localhost:8000/api/student', form, token)
-                    .then( () => {
-                        this.$swal({
-                            title: 'Success' ,
-                            text: 'Data has been added',
-                            icon: 'success'
-                        })
-                        this.getData()
+                    .then( (resp) => {
+                        if(resp.data.status === 'success'){
+                            this.$swal({
+                                title: 'Success' ,
+                                text: 'Data has been added',
+                                icon: 'success'
+                            })
+                            this.getData()   
+                        }else {
+                            this.$swal({
+                                title: 'Failed' ,
+                                text: 'Data has not been added',
+                                icon: 'error'
+                            })
+                        }
                     })
                 }else {
                     let token = {
@@ -429,6 +437,31 @@
                 this.axios.get('http://localhost:8000/api/cekPayment/' + id, token)
                 .then( resp => {
                     this.chekPaymentStatus = resp.data
+                })
+            },
+            removeData(id){
+                this.$swal({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    buttons: [true, 'Yes delete it']
+                }).then(value => {
+                    if(value.isConfirmed){
+                        let token = {
+                            headers : { "Authorization" : "Bearer " + localStorage.getItem("Authorization")}
+                        }
+                        this.axios.delete('http://localhost:8000/api/student/' + id, token)
+                        .then(resp => {
+                            if(resp.data.status === 'success'){
+                                this.$swal({
+                                    title: 'Success' ,
+                                    text: 'Data has been added',
+                                    icon: 'success'
+                                })
+                            }
+                            this.getData()
+                        })
+                    }
                 })
             }
         },

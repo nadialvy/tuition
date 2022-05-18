@@ -98,7 +98,7 @@
                         console.log(response.data.data[0]);
                         this.$store.commit("setUserName", response.data.data[0].name)
                         this.$store.commit("setUserType", response.data.data[0].type)
-                        this.$router.push('/student')
+                        this.$router.push('/dashboard')
                     }else {
                         this.$router.push('/login')
                     }
